@@ -167,7 +167,7 @@ SECURITY_RULES = [
         "sql_injection",
         "SQL Injection",
         RiskLevel.HIGH,
-        r"(execute\s*\(\s*['\"].*%s|execute\s*\(\s*['\"].*\+|cursor\.execute.*f['\"])",
+        r"(cursor\.execute\s*\(\s*['\"].*%s|cursor\.execute\s*\(\s*['\"].*\+|\.execute\s*\(\s*f['\"])",
         "SQL injection vulnerability",
         "Use parameterized queries. Never concatenate SQL strings."
     ),
@@ -183,7 +183,7 @@ SECURITY_RULES = [
         "weak_crypto",
         "Weak Cryptography",
         RiskLevel.HIGH,
-        r"(md5\s*\(|sha1\s*\(|DES|RC4|ECB_MODE|random\.random\s*\(\s*\))",
+        r"(\bmd5\s*\(|\bsha1\s*\(|\bhashlib\.md5|\bhashlib\.sha1|DES\s*\(|RC4|ECB_MODE)",
         "Use of weak or broken cryptographic algorithms",
         "Use strong cryptography: SHA-256, AES-GCM, secrets module."
     ),
@@ -261,21 +261,63 @@ class SkillGuard:
         
     def scan(self) -> List[Finding]:
         """Scan skill for security issues."""
+        import time
+        start_time = time.time()
+        
         print(f"🔍 SkillGuard v0.4.0 - Scanning: {self.skill_path}")
         print("-" * 50)
         
         # Find all relevant files
-        extensions = ['*.py', '*.md', '*.sh', '*.yml', '*.yaml', '*.json', '*.js']
+        extensions = ['*.py', '*.md', '*.sh', '*.yml', '*.yaml', '*.json', '*.js', '*.ts']
         files = []
         for ext in extensions:
             files.extend(self.skill_path.rglob(ext))
         
+        # Exclude common non-source directories
+        exclude_dirs = {'.git', '__pycache__', 'node_modules', '.venv', 'venv', 
+                       'dist', 'build', '.cache', '.tox', '.pytest_cache'}
+        files = [f for f in files if not any(d in f.parts for d in exclude_dirs)]
+        
         self.files_scanned = len(files)
         
+        # Compile all patterns once for performance
+        compiled_rules = []
+        for rule in self.rules:
+            compiled_rules.append((rule, re.compile(rule.pattern, re.IGNORECASE)))
+        
+        # Scan files
         for file_path in files:
-            self._scan_file(file_path)
+            self._scan_file_optimized(file_path, compiled_rules)
+        
+        elapsed = time.time() - start_time
+        print(f"✅ Scanned {self.files_scanned} files in {elapsed:.2f}s")
         
         return self.findings
+    
+    def _scan_file_optimized(self, file_path: Path, compiled_rules):
+        """Scan a single file with pre-compiled patterns."""
+        try:
+            content = file_path.read_text(encoding="utf-8", errors="ignore")
+        except Exception:
+            return
+        
+        relative_path = file_path.relative_to(self.skill_path)
+        
+        for rule, pattern in compiled_rules:
+            for match in pattern.finditer(content):
+                line_num = content[:match.start()].count("\n") + 1
+                
+                finding = Finding(
+                    rule_id=rule.id,
+                    rule_name=rule.name,
+                    level=rule.level,
+                    file=str(relative_path),
+                    line=line_num,
+                    match=match.group(0)[:80],
+                    description=rule.description,
+                    remediation=rule.remediation
+                )
+                self.findings.append(finding)
     
     def _scan_file(self, file_path: Path):
         """Scan a single file."""
