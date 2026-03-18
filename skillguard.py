@@ -135,6 +135,118 @@ SECURITY_RULES = [
         "Incomplete or temporary code that may have security implications",
         "Review and address all TODO/FIXME items before production."
     ),
+    
+    # Additional Critical Rules
+    SecurityRule(
+        "privilege_escalation",
+        "Privilege Escalation",
+        RiskLevel.CRITICAL,
+        r"(sudo\s+|chmod\s+777|chown\s+root|setuid|setgid)",
+        "Attempt to escalate privileges or change sensitive permissions",
+        "Avoid privilege escalation. Use least privilege principle."
+    ),
+    SecurityRule(
+        "backdoor_code",
+        "Potential Backdoor",
+        RiskLevel.CRITICAL,
+        r"(backdoor|bind\s*shell|connect\s*back|spawn\s*shell|pty\s*spawn)",
+        "Potential backdoor or unauthorized access mechanism",
+        "Remove backdoor code immediately. Audit all network-facing code."
+    ),
+    
+    # Additional High Rules
+    SecurityRule(
+        "insecure_deserialization",
+        "Insecure Deserialization",
+        RiskLevel.HIGH,
+        r"(pickle\.loads|yaml\.load\s*\(|json\.load.*object_hook|marshal\.loads)",
+        "Insecure deserialization can lead to remote code execution",
+        "Use safe alternatives like json.loads() or yaml.safe_load()."
+    ),
+    SecurityRule(
+        "sql_injection",
+        "SQL Injection",
+        RiskLevel.HIGH,
+        r"(execute\s*\(\s*['\"].*%s|execute\s*\(\s*['\"].*\+|cursor\.execute.*f['\"])",
+        "SQL injection vulnerability",
+        "Use parameterized queries. Never concatenate SQL strings."
+    ),
+    SecurityRule(
+        "xss_vulnerability",
+        "Cross-Site Scripting (XSS)",
+        RiskLevel.HIGH,
+        r"(innerHTML\s*=|document\.write\s*\(|\.html\s*\(.*\+|render_template_string)",
+        "Potential XSS vulnerability",
+        "Use template auto-escaping. Sanitize all user input."
+    ),
+    SecurityRule(
+        "weak_crypto",
+        "Weak Cryptography",
+        RiskLevel.HIGH,
+        r"(md5\s*\(|sha1\s*\(|DES|RC4|ECB_MODE|random\.random\s*\(\s*\))",
+        "Use of weak or broken cryptographic algorithms",
+        "Use strong cryptography: SHA-256, AES-GCM, secrets module."
+    ),
+    
+    # Additional Medium Rules
+    SecurityRule(
+        "path_traversal",
+        "Path Traversal",
+        RiskLevel.MEDIUM,
+        r"(open\s*\(\s*.*\+.*\)|\.\./|\.\.\\\\|/etc/passwd|\.%00)",
+        "Path traversal vulnerability",
+        "Validate and sanitize all file paths. Use path normalization."
+    ),
+    SecurityRule(
+        "command_injection",
+        "Command Injection",
+        RiskLevel.MEDIUM,
+        r"(os\.system\s*\(|subprocess\.call\s*\(.*\+|popen\s*\(.*\$)",
+        "Command injection vulnerability",
+        "Use subprocess with list arguments. Never shell=True with user input."
+    ),
+    SecurityRule(
+        "hardcoded_ip",
+        "Hardcoded IP/Domain",
+        RiskLevel.MEDIUM,
+        r"(\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b|https?://\d+\.\d+\.\d+\.\d+)",
+        "Hardcoded IP address or domain",
+        "Use configuration files or environment variables for endpoints."
+    ),
+    SecurityRule(
+        "insecure_random",
+        "Insecure Randomness",
+        RiskLevel.MEDIUM,
+        r"(random\.randint|random\.choice|random\.shuffle|Math\.random\s*\(\s*\))",
+        "Insecure random number generation for security purposes",
+        "Use secrets module (Python) or crypto.randomBytes (Node.js)."
+    ),
+    
+    # Additional Low Rules
+    SecurityRule(
+        "http_not_https",
+        "HTTP Instead of HTTPS",
+        RiskLevel.LOW,
+        r"(http://(?!localhost|127\.0\.0\.1|192\.168\.|10\.\.))",
+        "Using HTTP instead of HTTPS for external connections",
+        "Always use HTTPS for external API calls."
+    ),
+    SecurityRule(
+        "broad_exception",
+        "Broad Exception Handling",
+        RiskLevel.LOW,
+        r"(except\s*:\s*$|except\s+Exception\s*:\s*$|except\s*\(\s*\)\s*:)",
+        "Overly broad exception handling may hide security issues",
+        "Catch specific exceptions. Log and handle errors appropriately."
+    ),
+    SecurityRule(
+        "disabled_verification",
+        "Disabled SSL Verification",
+        RiskLevel.LOW,
+        r"(verify\s*=\s*False|verify_ssl\s*=\s*False|NODE_TLS_REJECT_UNAUTHORIZED\s*=\s*['\"]?0)",
+        "SSL certificate verification disabled",
+        "Never disable SSL verification in production."
+    ),
 ]
 
 
@@ -149,7 +261,7 @@ class SkillGuard:
         
     def scan(self) -> List[Finding]:
         """Scan skill for security issues."""
-        print(f"🔍 SkillGuard v0.2.0 - Scanning: {self.skill_path}")
+        print(f"🔍 SkillGuard v0.4.0 - Scanning: {self.skill_path}")
         print("-" * 50)
         
         # Find all relevant files
