@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillGuard Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #333;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #888;
+            font-size: 1.1em;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        .stat-card {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        .stat-card.critical { border-color: #ff4444; }
+        .stat-card.high { border-color: #ff8800; }
+        .stat-card.medium { border-color: #ffaa00; }
+        .stat-card.low { border-color: #00ff88; }
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .stat-label {
+            color: #888;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+        .upload-area {
+            background: #1a1a1a;
+            border: 2px dashed #444;
+            border-radius: 12px;
+            padding: 60px;
+            text-align: center;
+            margin: 40px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .upload-area:hover {
+            border-color: #00ff88;
+            background: #1a2a1a;
+        }
+        .upload-area h2 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+        .upload-area p {
+            color: #888;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        .feature {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #333;
+        }
+        .feature h3 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+        .feature p {
+            color: #aaa;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid #333;
+            color: #666;
+        }
+        footer a {
+            color: #00ff88;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔒 SkillGuard</h1>
+            <p class="subtitle">AI Skill 安全分析仪表板</p>
+        </header>
+
+        <div class="stats">
+            <div class="stat-card critical">
+                <div class="stat-label">CRITICAL</div>
+                <div class="stat-value" style="color: #ff4444;">4</div>
+                <div class="stat-label">安全规则</div>
+            </div>
+            <div class="stat-card high">
+                <div class="stat-label">HIGH</div>
+                <div class="stat-value" style="color: #ff8800;">7</div>
+                <div class="stat-label">安全规则</div>
+            </div>
+            <div class="stat-card medium">
+                <div class="stat-label">MEDIUM</div>
+                <div class="stat-value" style="color: #ffaa00;">7</div>
+                <div class="stat-label">安全规则</div>
+            </div>
+            <div class="stat-card low">
+                <div class="stat-label">LOW</div>
+                <div class="stat-value" style="color: #00ff88;">5</div>
+                <div class="stat-label">安全规则</div>
+            </div>
+        </div>
+
+        <div class="upload-area">
+            <h2>📁 上传 Skill 进行扫描</h2>
+            <p>拖拽文件夹到此处，或点击选择文件夹</p>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                支持: Python, JavaScript, Shell, Markdown
+            </p>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>🔍 23 个安全规则</h3>
+                <p>覆盖危险命令、凭据泄露、提示词注入、SQL注入、XSS等常见安全风险</p>
+            </div>
+            <div class="feature">
+                <h3>⚡ 极速扫描</h3>
+                <p>优化的扫描引擎，平均 0.8 秒完成扫描，支持大型项目</p>
+            </div>
+            <div class="feature">
+                <h3>📊 多格式报告</h3>
+                <p>支持 Text、JSON、Markdown、SARIF 格式，兼容 GitHub Code Scanning</p>
+            </div>
+            <div class="feature">
+                <h3>🔧 CI/CD 集成</h3>
+                <p>GitHub Actions 自动扫描，每日定时检查，安全漏洞早发现</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>SkillGuard v0.4.0 | Made by <a href="https://github.com/AIPMAndy">AIPMAndy</a></p>
+            <p style="margin-top: 10px;">
+                <a href="https://github.com/AIPMAndy/skillguard">GitHub</a> | 
+                <a href="https://github.com/AIPMAndy/skillguard/releases">Releases</a> | 
+                <a href="https://github.com/AIPMAndy/skillguard/issues">Issues</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple drag and drop
+        const uploadArea = document.querySelector('.upload-area');
+        
+        uploadArea.addEventListener('click', () => {
+            alert('Web 版本开发中...\n\n请使用 CLI 版本:\npython3 skillguard.py ./my-skill/');
+        });
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#00ff88';
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#444';
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#444';
+            alert('Web 版本开发中...\n\n请使用 CLI 版本:\npython3 skillguard.py ./my-skill/');
+        });
+    </script>
+</body>
+</html>
