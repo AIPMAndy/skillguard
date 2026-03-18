@@ -71,7 +71,7 @@ SECURITY_RULES = [
         "credential_exposure",
         "Hardcoded Credentials",
         RiskLevel.HIGH,
-        r"(api[_-]?key\s*[=:]\s*['\"][a-zA-Z0-9_\-]{20,}|password\s*[=:]\s*['\"]\S+|token\s*[=:]\s*['\"]sk-[a-zA-Z0-9]{20,})",
+        r"(\bapi[_-]?key\s*=\s*['\"][a-zA-Z0-9_\-]{10,}|\bpassword\s*=\s*['\"]\S{8,}|\btoken\s*=\s*['\"]sk-[a-zA-Z0-9]{10,})",
         "Hardcoded credentials in source code",
         "Use environment variables or secure vaults for credentials."
     ),
@@ -249,6 +249,8 @@ class SkillGuard:
             return self._generate_json_report()
         elif format == "markdown":
             return self._generate_markdown_report()
+        elif format == "sarif":
+            return self._generate_sarif_report()
         else:
             return self._generate_text_report()
     
@@ -259,6 +261,61 @@ class SkillGuard:
             "findings": [asdict(f) for f in self.findings],
         }
         return json.dumps(report, indent=2, ensure_ascii=False)
+    
+    def _generate_sarif_report(self) -> str:
+        """Generate SARIF report for GitHub Code Scanning."""
+        sarif = {
+            "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+            "version": "2.1.0",
+            "runs": [{
+                "tool": {
+                    "driver": {
+                        "name": "SkillGuard",
+                        "version": "0.2.0",
+                        "informationUri": "https://github.com/AIPMAndy/skillguard",
+                        "rules": []
+                    }
+                },
+                "results": []
+            }]
+        }
+        
+        # Add rules
+        rules_dict = {}
+        for finding in self.findings:
+            if finding.rule_id not in rules_dict:
+                rule = {
+                    "id": finding.rule_id,
+                    "name": finding.rule_name,
+                    "shortDescription": {"text": finding.description},
+                    "fullDescription": {"text": finding.description},
+                    "defaultConfiguration": {"level": finding.level.lower()},
+                    "help": {"text": finding.remediation}
+                }
+                rules_dict[finding.rule_id] = rule
+                sarif["runs"][0]["tool"]["driver"]["rules"].append(rule)
+        
+        # Add results
+        for finding in self.findings:
+            result = {
+                "ruleId": finding.rule_id,
+                "level": finding.level.lower(),
+                "message": {
+                    "text": f"{finding.description}\n\nRemediation: {finding.remediation}"
+                },
+                "locations": [{
+                    "physicalLocation": {
+                        "artifactLocation": {"uri": finding.file},
+                        "region": {
+                            "startLine": finding.line,
+                            "snippet": {"text": finding.match}
+                        }
+                    }
+                }]
+            }
+            sarif["runs"][0]["results"].append(result)
+        
+        return json.dumps(sarif, indent=2, ensure_ascii=False)
     
     def _generate_markdown_report(self) -> str:
         """Generate Markdown report."""
@@ -374,9 +431,9 @@ Examples:
     parser.add_argument("path", help="Path to skill directory")
     parser.add_argument(
         "--format", "-f",
-        choices=["text", "json", "markdown"],
+        choices=["text", "json", "markdown", "sarif"],
         default="text",
-        help="Output format (default: text)"
+        help="Output format (default: text, sarif for GitHub Code Scanning)"
     )
     parser.add_argument(
         "--output", "-o",

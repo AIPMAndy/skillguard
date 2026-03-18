@@ -1,0 +1,79 @@
+# SkillGuard Configuration
+# Place this file as .skillguard.yml in your skill directory
+
+# Scan settings
+scan:
+  # File extensions to scan
+  extensions:
+    - .py
+    - .md
+    - .sh
+    - .yml
+    - .yaml
+    - .json
+    - .js
+    - .ts
+  
+  # Directories to exclude
+  exclude_dirs:
+    - .git
+    - __pycache__
+    - node_modules
+    - .venv
+    - venv
+    - dist
+    - build
+    - .cache
+  
+  # Files to exclude (supports glob patterns)
+  exclude_files:
+    - "*.min.js"
+    - "*.test.py"
+    - "README*.md"  # Exclude README files (examples may trigger false positives)
+    - "CHANGELOG*"
+    - "LICENSE*"
+
+# Rule settings
+rules:
+  # Disable specific rules
+  disabled:
+    # - todo_fixme  # Uncomment to disable TODO/FIXME detection
+  
+  # Customize rule severity
+  severity:
+    eval_exec: MEDIUM  # Change from MEDIUM to HIGH
+    network_request: LOW  # Change from MEDIUM to LOW
+  
+  # Add custom rules
+  custom:
+    - id: custom_api_key
+      name: Custom API Key Pattern
+      level: HIGH
+      pattern: "mycompany_api_key\\s*=\\s*['\"]\\w+"
+      description: "Hardcoded company API key"
+      remediation: "Use environment variables for API keys"
+
+# Report settings
+report:
+  # Default output format
+  format: markdown
+  
+  # Include remediation advice
+  show_remediation: true
+  
+  # Include code snippets
+  show_snippets: true
+  snippet_length: 80
+
+# CI/CD settings
+ci:
+  # Fail on findings at or above this level
+  fail_on: HIGH
+  
+  # Exit codes
+  exit_codes:
+    clean: 0
+    low: 0
+    medium: 0
+    high: 1
+    critical: 1
