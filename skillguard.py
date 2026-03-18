@@ -53,7 +53,7 @@ SECURITY_RULES = [
         "dangerous_command",
         "Dangerous System Command",
         RiskLevel.CRITICAL,
-        r"(rm\s+-rf\s+/|curl\s+.*\|\s*bash|wget\s+.*\|\s*sh|mkfs|dd\s+if=/dev/zero|>:/dev/sda)",
+        r"^\s*(rm\s+-rf\s+/|curl\s+.*\|\s*bash|wget\s+.*\|\s*sh|mkfs|dd\s+if=/dev/zero|>:/dev/sda)",
         "Dangerous command that can destroy system or execute remote code",
         "Avoid executing commands from untrusted sources. Use package managers instead."
     ),
@@ -105,7 +105,7 @@ SECURITY_RULES = [
         "eval_exec",
         "Dynamic Code Execution",
         RiskLevel.MEDIUM,
-        r"(eval\s*\(|exec\s*\(|execfile|compile\s*\(|__import__\s*\(\s*['\"]os)",
+        r"(\beval\s*\(|\bexec\s*\(|\bexecfile\s*\(|__import__\s*\(\s*['\"]os)",
         "Dynamic code execution can lead to code injection",
         "Avoid eval/exec. Use safer alternatives like ast.literal_eval."
     ),
@@ -230,7 +230,8 @@ class SkillGuard:
         }
     
     def _get_risk_level(self) -> str:
-        """Get overall risk level.""        score = self.calculate_risk_score()
+        """Get overall risk level."""
+        score = self.calculate_risk_score()
         if score >= 80:
             return RiskLevel.CLEAN
         elif score >= 60:
