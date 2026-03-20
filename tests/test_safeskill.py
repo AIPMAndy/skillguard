@@ -8,7 +8,7 @@ from pathlib import Path
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from skillguard import SkillGuard, SecurityRule, RiskLevel, Finding
+from safeskill import SkillGuard, SecurityRule, RiskLevel, Finding
 
 
 class TestSecurityRules(unittest.TestCase):

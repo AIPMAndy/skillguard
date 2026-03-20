@@ -426,7 +426,7 @@ class SkillGuard:
                     "driver": {
                         "name": "SkillGuard",
                         "version": "0.2.0",
-                        "informationUri": "https://github.com/AIPMAndy/skillguard",
+                        "informationUri": "https://github.com/AIPMAndy/safeskill",
                         "rules": []
                     }
                 },
@@ -577,9 +577,9 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python3 skillguard.py ./my-skill/
-  python3 skillguard.py ./my-skill/ --format markdown -o report.md
-  python3 skillguard.py ./my-skill/ --format json | jq '.summary.risk_score'
+  python3 safeskill.py ./my-skill/
+  python3 safeskill.py ./my-skill/ --format markdown -o report.md
+  python3 safeskill.py ./my-skill/ --format json | jq '.summary.risk_score'
         """
     )
     parser.add_argument("path", help="Path to skill directory")

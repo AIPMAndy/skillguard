@@ -29,11 +29,14 @@ scan:
   exclude_files:
     - "*.min.js"
     - "*.test.py"
+    - "test_*.py"  # Exclude test files
     - "README*.md"  # Exclude README files (examples may trigger false positives)
     - "CHANGELOG*"
     - "LICENSE*"
     - "skillguard.py"  # Exclude self (rule definitions trigger false positives)
     - ".skillguard.yml"  # Exclude config file
+    - "*.yml"  # Exclude YAML files
+    - "*.yaml"  # Exclude YAML files
 
 # Rule settings
 rules:

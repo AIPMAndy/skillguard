@@ -6,7 +6,7 @@
 [![Python](https://img.shields.io/badge/Python-3.9+-green.svg)](https://python.org)
 [![Security](https://img.shields.io/badge/Security-First-red.svg)]()
 [![Version](https://img.shields.io/badge/version-0.4.0-blue.svg)]()
-[![CI](https://github.com/AIPMAndy/skillguard/workflows/Security%20Scan/badge.svg)](https://github.com/AIPMAndy/skillguard/actions)
+[![CI](https://github.com/AIPMAndy/safeskill/workflows/Security%20Scan/badge.svg)](https://github.com/AIPMAndy/safeskill/actions)
 
 ---
 
@@ -41,24 +41,24 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/AIPMAndy/skillguard.git
-cd skillguard
+git clone https://github.com/AIPMAndy/safeskill.git
+cd safeskill
 
 # 无需安装依赖，纯 Python 标准库
-python3 skillguard.py --help
+python3 safeskill.py --help
 ```
 
 ### 扫描 Skill
 
 ```bash
 # 基础扫描
-python3 skillguard.py ./my-skill/
+python3 safeskill.py ./my-skill/
 
 # Markdown 报告
-python3 skillguard.py ./my-skill/ --format markdown -o report.md
+python3 safeskill.py ./my-skill/ --format markdown -o report.md
 
 # JSON 输出（用于 CI/CD）
-python3 skillguard.py ./my-skill/ --format json --fail-on high
+python3 safeskill.py ./my-skill/ --format json --fail-on high
 ```
 
 ---
@@ -66,7 +66,7 @@ python3 skillguard.py ./my-skill/ --format json --fail-on high
 ## 📊 扫描示例
 
 ```bash
-$ python3 skillguard.py ./dangerous-skill/
+$ python3 safeskill.py ./dangerous-skill/
 
 ==================================================
 🔒 SkillGuard v0.2.0 - Scanning: ./dangerous-skill/
@@ -125,7 +125,7 @@ Total Findings: 3
 # GitHub Actions example
 - name: Security Scan
   run: |
-    python3 skillguard.py ./skills/ --format json --fail-on high
+    python3 safeskill.py ./skills/ --format json --fail-on high
 ```
 
 ---
@@ -133,8 +133,8 @@ Total Findings: 3
 ## 📁 项目结构
 
 ```
-skillguard/
-├── skillguard.py      # 核心扫描引擎 (430行)
+safeskill/
+├── safeskill.py      # 核心扫描引擎 (430行)
 ├── README.md          # 项目文档
 ├── ROADMAP.md         # 开发路线图
 ├── LICENSE            # Apache 2.0
@@ -184,7 +184,7 @@ skillguard/
 
 - 微信: AIPMAndy
 - GitHub: [@AIPMAndy](https://github.com/AIPMAndy)
-- 项目: [SoSkill](https://github.com/AIPMAndy/soskill) | [SkillGuard](https://github.com/AIPMAndy/skillguard)
+- 项目: [SoSkill](https://github.com/AIPMAndy/soskill) | [SkillGuard](https://github.com/AIPMAndy/safeskill)
 
 ---
 

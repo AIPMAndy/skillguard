@@ -10,7 +10,7 @@ on:
     - cron: '0 1 * * *'
 
 jobs:
-  skillguard-scan:
+  safeskill-scan:
     runs-on: ubuntu-latest
     name: SkillGuard Security Scan
     
@@ -29,16 +29,16 @@ jobs:
     
     - name: Run SkillGuard Scan
       run: |
-        skillguard . --format sarif --output skillguard-results.sarif || true
+        safeskill . --format sarif --output safeskill-results.sarif || true
     
     - name: Upload SARIF to GitHub
       uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
-        sarif_file: skillguard-results.sarif
-        category: skillguard
+        sarif_file: safeskill-results.sarif
+        category: safeskill
     
     - name: Check for Critical Issues
       run: |
-        skillguard . --fail-on critical || echo "Critical issues found, check SARIF report"
+        safeskill . --fail-on critical || echo "Critical issues found, check SARIF report"
       continue-on-error: true

@@ -1,16 +1,16 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="skillguard",
+    name="safeskill",
     version="0.2.0",
     description="Skill Security Scanner - Focus on securing AI Skills",
     author="AIPMAndy",
     author_email="",
-    url="https://github.com/AIPMAndy/skillguard",
-    py_modules=["skillguard"],
+    url="https://github.com/AIPMAndy/safeskill",
+    py_modules=["safeskill"],
     entry_points={
         "console_scripts": [
-            "skillguard=skillguard:main",
+            "safeskill=safeskill:main",
         ],
     },
     python_requires=">=3.9",

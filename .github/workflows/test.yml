@@ -28,9 +28,9 @@ jobs:
     
     - name: Run tests
       run: |
-        python3 -m unittest tests.test_skillguard -v
+        python3 -m unittest tests.test_safeskill -v
     
     - name: Test CLI
       run: |
-        skillguard --help
-        skillguard . --format json
+        safeskill --help
+        safeskill . --format json
