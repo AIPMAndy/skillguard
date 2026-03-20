@@ -1,75 +1,132 @@
+<div align="center">
+
 # 🔒 SafeSkill
 
-> 专注 Skill 安全分析，让每个人都能安全使用 AI Skill
+**AI Skill 的安全扫描器：在安装和运行前，先找出危险命令、凭据泄露、提示词注入与可疑行为。**
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.9+-green.svg)](https://python.org)
-[![Security](https://img.shields.io/badge/Security-First-red.svg)]()
-[![Version](https://img.shields.io/badge/version-0.4.0-blue.svg)]()
-[![CI](https://github.com/AIPMAndy/safeskill/workflows/Security%20Scan/badge.svg)](https://github.com/AIPMAndy/safeskill/actions)
+[![Python](https://img.shields.io/badge/Python-3.9%2B-green.svg)](https://python.org)
+[![Version](https://img.shields.io/badge/version-0.4.1-blue.svg)](https://github.com/AIPMAndy/safeskill)
+[![Tests](https://github.com/AIPMAndy/safeskill/actions/workflows/test.yml/badge.svg)](https://github.com/AIPMAndy/safeskill/actions/workflows/test.yml)
+[![Security Scan](https://github.com/AIPMAndy/safeskill/actions/workflows/security-scan.yml/badge.svg)](https://github.com/AIPMAndy/safeskill/actions/workflows/security-scan.yml)
+
+**[English](README_EN.md) | 简体中文**
+
+*像“杀毒软件”一样先扫一遍 Skill，再决定要不要装。*
+
+</div>
 
 ---
 
-## 💡 一句话介绍
+## 为什么会有 SafeSkill？
 
-**SafeSkill = Skill 的「杀毒软件」**
+AI Skill / Agent Skill 正在变多，但大多数人在安装一个 Skill 前，并不会逐行审计它的代码。
+问题是：
 
-安装 Skill 前自动扫描，识别恶意代码、凭据窃取、提示词注入等风险。
+- 一个 `curl | bash` 就可能直接执行远程脚本
+- 一个硬编码 token 就可能泄露凭据
+- 一段 prompt injection 文案 就可能诱导 Agent 越权执行
+- 一个读取 `~/.ssh` 或 `/etc/passwd` 的动作，就已经越界
 
----
-
-## 🎯 核心价值
-
-| 风险类型 | 检测能力 | 示例 |
-|---------|---------|------|
-| 🔴 **危险命令** | `rm -rf /`, `curl \| bash` | 系统破坏、远程执行 |
-| 🔴 **反向 Shell** | `bash -i`, `nc -e` | 未授权远程访问 |
-| 🔴 **凭据泄露** | API Key、Token 硬编码 | 敏感信息暴露 |
-| 🟠 **提示词注入** | `ignore previous instructions` | 系统指令覆盖 |
-| 🟠 **数据外泄** | `requests.post(json=...)` | 敏感数据外传 |
-| 🟡 **敏感文件访问** | `~/.ssh/`, `/etc/passwd` | 系统文件读取 |
-| 🟡 **动态代码执行** | `eval()`, `exec()` | 代码注入风险 |
-| 🟢 **调试模式** | `debug=True` | 信息泄露 |
-
-**9 大类安全规则，覆盖 Skill 常见风险场景**
+**SafeSkill 的目标很直接：把这些高频风险在“使用前”暴露出来。**
 
 ---
 
-## 🚀 快速开始
+## SafeSkill 是什么？
 
-### 安装
+> **SafeSkill = Skill 的静态安全扫描器（SAST）**
+
+给它一个 Skill 目录，它会扫描常见代码与配置文件，输出：
+
+- 风险发现项（findings）
+- 风险等级（Critical / High / Medium / Low / Clean）
+- 风险分数（0-100）
+- 文本 / Markdown / JSON / SARIF 报告
+
+适合用在：
+
+- 安装第三方 Skill 之前
+- 提交 Skill 到市场 / 仓库之前
+- CI/CD 里自动做安全门禁
+- 批量审计团队内部 Skill
+
+---
+
+## 🆚 为什么选它？
+
+| 能力 | 通用 lint / formatter | 手动读代码 | **SafeSkill** |
+|------|----------------------|------------|---------------|
+| 找语法/风格问题 | ✅ | ✅ | ❌ |
+| 发现危险命令 | ❌ | ✅ | ✅ |
+| 发现凭据暴露 | ❌ | ✅ | ✅ |
+| 发现提示词注入模式 | ❌ | ✅ | ✅ |
+| 给出风险评分 | ❌ | ❌ | ✅ |
+| 适合接 CI | 🟡 | ❌ | ✅ |
+| 上手成本低 | ✅ | ❌ | ✅ |
+
+**它不是替代代码审计，而是把最常见、最值得先拦下来的 Skill 风险自动化。**
+
+---
+
+## 🚀 30 秒快速开始
+
+### 方式 1：直接运行
 
 ```bash
-# 克隆仓库
 git clone https://github.com/AIPMAndy/safeskill.git
 cd safeskill
-
-# 无需安装依赖，纯 Python 标准库
-python3 safeskill.py --help
+python3 safeskill.py ./your-skill
 ```
 
-### 扫描 Skill
+### 方式 2：安装成命令行工具
 
 ```bash
-# 基础扫描
-python3 safeskill.py ./my-skill/
+git clone https://github.com/AIPMAndy/safeskill.git
+cd safeskill
+pip install -e .
+safeskill ./your-skill
+```
 
+### 生成不同格式的报告
+
+```bash
 # Markdown 报告
-python3 safeskill.py ./my-skill/ --format markdown -o report.md
+python3 safeskill.py ./your-skill --format markdown -o report.md
 
-# JSON 输出（用于 CI/CD）
-python3 safeskill.py ./my-skill/ --format json --fail-on high
+# JSON 报告（适合 CI/CD）
+python3 safeskill.py ./your-skill --format json --quiet
+
+# SARIF（适合 GitHub Code Scanning）
+python3 safeskill.py ./your-skill --format sarif -o safeskill-results.sarif
 ```
 
 ---
 
-## 📊 扫描示例
+## 能扫出什么？
+
+### 已覆盖的典型风险
+
+| 风险类别 | 例子 | 说明 |
+|---------|------|------|
+| 危险命令 | `rm -rf /`, `curl ... | bash` | 破坏系统 / 执行远程脚本 |
+| 反向 Shell | `bash -i`, `nc -e` | 未授权远程访问 |
+| 凭据暴露 | `api_key=...`, `token=...` | 敏感信息硬编码 |
+| 提示词注入 | `ignore previous instructions` | 覆盖系统约束 |
+| 数据外泄 | `requests.post(json=...)` | 可疑外发行为 |
+| 敏感文件访问 | `~/.ssh`, `/etc/passwd` | 访问敏感路径 |
+| 动态代码执行 | `eval()`, `exec()` | 注入风险 |
+| 权限升级 | `sudo`, `chmod 777` | 越权 / 过宽权限 |
+| 弱加密 / 低安全实践 | `md5`, `sha1`, `debug=True` | 不安全实现 |
+
+---
+
+## 使用示例
 
 ```bash
-$ python3 safeskill.py ./dangerous-skill/
+$ python3 safeskill.py ./dangerous-skill
 
 ==================================================
-🔒 SafeSkill v0.2.0 - Scanning: ./dangerous-skill/
+🔒 SkillGuard Security Report
 ==================================================
 
 Risk Score: 45/100 (HIGH)
@@ -78,8 +135,6 @@ Total Findings: 3
 
 🔴 CRITICAL: 1
 🟠 HIGH: 2
-🟡 MEDIUM: 0
-🟢 LOW: 0
 
 --------------------------------------------------
 
@@ -92,103 +147,130 @@ Total Findings: 3
    File: config.py:12
    Match: api_key = "sk-abc123xyz789"
    Hardcoded credentials in source code
-
-🟠 [HIGH] Prompt Injection Attack
-   File: SKILL.md:45
-   Match: ignore previous instructions and
-   Attempt to override system instructions or persona
-
-📄 Report saved: security-report.md
 ```
 
 ---
 
-## 🛠️ 核心功能
+## 核心特性
 
-### 1. 静态代码分析（SAST）
-- 扫描 Python、Shell、Markdown、YAML、JSON
-- 9 大类安全规则
-- 正则匹配 + 语义分析
+### 1) 面向 Skill 场景，而不是泛代码库
+它不是通用代码质量工具，而是针对 Skill / Agent / 自动化脚本里高频出现的危险模式。
 
-### 2. 风险评分系统
-- **0-100 分** 量化风险
-- **5 级风险** 分级（Critical/High/Medium/Low/Clean）
-- 基于风险严重度和数量加权计算
+### 2) 支持多种输出格式
+- `text`：终端直接看
+- `markdown`：适合存档 / 分享
+- `json`：适合程序消费
+- `sarif`：适合 GitHub Code Scanning
 
-### 3. 多格式报告
-- **Text**: 命令行友好
-- **Markdown**: 适合分享和存档
-- **JSON**: CI/CD 集成
+### 3) 支持配置化排除与规则定制
+支持通过 `.safeskill.yml`：
+- 配置扫描扩展名
+- 排除目录 / 文件
+- 禁用规则
+- 覆盖 severity
+- 添加自定义规则
 
-### 4. CI/CD 集成
+### 4) 适合接入 CI/CD
+可以把 SafeSkill 当成安全门禁的一部分，在 PR / push 时自动执行。
+
+---
+
+## 配置示例
+
 ```yaml
-# GitHub Actions example
-- name: Security Scan
-  run: |
-    python3 safeskill.py ./skills/ --format json --fail-on high
+scan:
+  exclude_dirs:
+    - .git
+    - node_modules
+  exclude_files:
+    - "README*.md"
+    - "tests/*"
+
+rules:
+  disabled:
+    - todo_fixme
+
+  severity:
+    network_request: LOW
+
+  custom:
+    - id: custom_api_key
+      name: Custom API Key Pattern
+      level: HIGH
+      pattern: "mycompany_api_key\\s*=\\s*['\"]\\w+"
+      description: "Hardcoded company API key"
+      remediation: "Use environment variables for API keys"
 ```
 
 ---
 
-## 📁 项目结构
+## GitHub Actions 集成
 
-```
-safeskill/
-├── safeskill.py      # 核心扫描引擎 (430行)
-├── README.md          # 项目文档
-├── ROADMAP.md         # 开发路线图
-├── LICENSE            # Apache 2.0
-└── .gitignore
+```yaml
+name: Skill Security Scan
+
+on: [push, pull_request]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - run: python safeskill.py . --format json --fail-on high --quiet
 ```
 
-**纯 Python 标准库，零依赖**
+如果你想把结果上传到 GitHub Code Scanning，可以用 `sarif` 输出。
 
 ---
 
-## 🗺️ Roadmap
+## 项目状态
 
-### v0.2.0 (当前) ✅
-- [x] 9 个安全规则
+### 当前已完成
+- [x] 核心规则库
 - [x] 风险评分系统
-- [x] 多格式报告
-- [x] CI/CD 集成
+- [x] Text / Markdown / JSON / SARIF 输出
+- [x] `.safeskill.yml` 配置支持
+- [x] GitHub Actions 基础集成
 
-### v0.3.0 (计划中)
-- [ ] 动态分析（沙箱）
-- [ ] 依赖漏洞扫描
-- [ ] 配置文件支持
-- [ ] VS Code 插件
+### 下一步适合做的
+- [ ] 更细的上下文分析，减少误报
+- [ ] 更多语言 / 文件类型支持
+- [ ] 规则测试样本库
+- [ ] 规则 marketplace / 社区共享
+- [ ] Web UI / Hosted API
 
-### v1.0.0 (未来)
-- [ ] Web Dashboard
-- [ ] 社区规则共享
-- [ ] API 服务
-- [ ] 企业版功能
+详见 [ROADMAP.md](ROADMAP.md)。
 
 ---
 
-## 🤝 与 SoSkill 的关系
+## 谁适合用？
 
-| 项目 | 定位 | 关系 |
-|------|------|------|
-| **SoSkill** | Skill 聚合 + 基础安全 | 发现 Skill |
-| **SafeSkill** | 深度安全分析 | 扫描 Skill |
-
-**集成计划**: SoSkill 将调用 SafeSkill API 提供安全评分
+- 想装第三方 Skill，但不想“盲信”代码的人
+- 想发布 Skill，又希望先自查风险的人
+- 做 Agent 平台 / Skill 市场，需要安全前置筛查的人
+- 把 AI 自动化用于生产环境，需要更稳一点的团队
 
 ---
 
-## 👨‍💻 作者
+## 作者
 
-**AI酋长Andy** - 前腾讯/百度 AI 产品专家
+**AI酋长 Andy**
 
-- 微信: AIPMAndy
-- GitHub: [@AIPMAndy](https://github.com/AIPMAndy)
-- 项目: [SoSkill](https://github.com/AIPMAndy/soskill) | [SafeSkill](https://github.com/AIPMAndy/safeskill)
+前腾讯 / 百度 AI 产品专家，长期关注：
+- AI Agent
+- Skill 生态
+- AI 安全与可信使用
+- AI 产品化与自动化系统
+
+GitHub: [@AIPMAndy](https://github.com/AIPMAndy)
 
 ---
 
-## 📄 License
+## License
 
 [Apache-2.0](LICENSE)
 
@@ -196,6 +278,8 @@ safeskill/
 
 <div align="center">
 
-**🔒 让 Skill 安全成为标配，不是奢侈品**
+**如果这个项目对你有帮助，欢迎给个 Star ⭐**
+
+这不只是一个扫描器，更像是给 AI Skill 生态补一层最基础的安全常识。
 
 </div>
