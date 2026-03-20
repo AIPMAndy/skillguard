@@ -1,0 +1,24 @@
+name: Tests /test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    name: Tests /test
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install SkillGuard
+      run: |
+        pip install -e .
+    - name: Run tests
+      run: |
+        python3 -m pytest tests/ -v

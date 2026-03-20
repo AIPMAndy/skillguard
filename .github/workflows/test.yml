@@ -28,7 +28,7 @@ jobs:
     
     - name: Run tests
       run: |
-        python3 tests/test_skillguard.py -v
+        python3 -m unittest tests.test_skillguard -v
     
     - name: Test CLI
       run: |
