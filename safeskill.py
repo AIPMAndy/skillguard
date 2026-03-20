@@ -491,6 +491,15 @@ class SkillGuard:
     def _generate_json_report(self) -> str:
         return json.dumps({"summary": self.get_summary(), "findings": [asdict(f) for f in self.findings]}, indent=2, ensure_ascii=False)
 
+    def _sarif_level(self, level: str) -> str:
+        mapping = {
+            RiskLevel.CRITICAL: "error",
+            RiskLevel.HIGH: "error",
+            RiskLevel.MEDIUM: "warning",
+            RiskLevel.LOW: "note",
+        }
+        return mapping.get(level, "warning")
+
     def _generate_sarif_report(self) -> str:
         sarif = {
             "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
@@ -516,8 +525,9 @@ class SkillGuard:
                     "name": finding.rule_name,
                     "shortDescription": {"text": finding.description},
                     "fullDescription": {"text": finding.description},
-                    "defaultConfiguration": {"level": finding.level.lower()},
+                    "defaultConfiguration": {"level": self._sarif_level(finding.level)},
                     "help": {"text": finding.remediation},
+                    "properties": {"skillguardSeverity": finding.level},
                 }
                 rules_dict[finding.rule_id] = rule
                 sarif["runs"][0]["tool"]["driver"]["rules"].append(rule)
@@ -526,7 +536,7 @@ class SkillGuard:
             sarif["runs"][0]["results"].append(
                 {
                     "ruleId": finding.rule_id,
-                    "level": finding.level.lower(),
+                    "level": self._sarif_level(finding.level),
                     "message": {"text": f"{finding.description}\n\nRemediation: {finding.remediation}"},
                     "locations": [{
                         "physicalLocation": {
@@ -534,6 +544,7 @@ class SkillGuard:
                             "region": {"startLine": finding.line, "snippet": {"text": finding.match}},
                         }
                     }],
+                    "properties": {"skillguardSeverity": finding.level},
                 }
             )
         return json.dumps(sarif, indent=2, ensure_ascii=False)
