@@ -5,7 +5,8 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.9+-green.svg)](https://python.org)
 [![Security](https://img.shields.io/badge/Security-First-red.svg)]()
-[![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)]()
+[![Version](https://img.shields.io/badge/version-0.4.0-blue.svg)]()
+[![CI](https://github.com/AIPMAndy/skillguard/workflows/Security%20Scan/badge.svg)](https://github.com/AIPMAndy/skillguard/actions)
 
 ---
 
