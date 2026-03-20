@@ -14,6 +14,11 @@
 
 *像“杀毒软件”一样先扫一遍 Skill，再决定要不要装。*
 
+**为什么值得看：**
+- 🔍 专门面向 AI Skill / Agent Skill 风险
+- ⚡ 轻量到可以直接塞进 CI
+- 🧩 支持 JSON / SARIF，方便接平台与审计流
+
 </div>
 
 ---
@@ -131,6 +136,23 @@ python3 safeskill.py ./your-skill --format sarif -o safeskill-results.sarif
 | 动态代码执行 | `eval()`, `exec()` | 注入风险 |
 | 权限升级 | `sudo`, `chmod 777` | 越权 / 过宽权限 |
 | 弱加密 / 低安全实践 | `md5`, `sha1`, `debug=True` | 不安全实现 |
+
+---
+
+## 🎬 Demo（1 分钟理解它）
+
+先扫项目自带的危险样例：
+
+```bash
+python3 safeskill.py ./examples/dangerous-skill
+```
+
+你会看到它直接报出：
+- 危险命令
+- 硬编码凭据
+- prompt injection 模式
+
+如果你是想给别人演示这个项目，这就是最简单的一条命令。
 
 ---
 
@@ -294,6 +316,16 @@ jobs:
 - AI 产品化与自动化系统
 
 GitHub: [@AIPMAndy](https://github.com/AIPMAndy)
+
+---
+
+## 相关文档
+
+- [README_EN.md](README_EN.md) — English version
+- [CONTRIBUTING.md](CONTRIBUTING.md) — 如何参与贡献
+- [SECURITY.md](SECURITY.md) — 安全报告流程
+- [CHANGELOG.md](CHANGELOG.md) — 更新记录
+- [ROADMAP.md](ROADMAP.md) — 后续规划
 
 ---
 

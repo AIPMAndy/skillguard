@@ -14,6 +14,11 @@
 
 *Think of it as antivirus for AI Skills: scan first, install later.*
 
+**Why it's worth a look:**
+- 🔍 purpose-built for AI Skill / Agent Skill risks
+- ⚡ light enough to drop into CI
+- 🧩 supports JSON / SARIF for platform and audit workflows
+
 </div>
 
 ---
@@ -131,6 +136,23 @@ python3 safeskill.py ./your-skill --format sarif -o safeskill-results.sarif
 | Dynamic execution | `eval()`, `exec()` | code injection risk |
 | Privilege escalation | `sudo`, `chmod 777` | excessive permissions |
 | Weak crypto / unsafe practice | `md5`, `sha1`, `debug=True` | insecure implementation |
+
+---
+
+## 🎬 Demo (under 1 minute)
+
+Try the built-in dangerous sample:
+
+```bash
+python3 safeskill.py ./examples/dangerous-skill
+```
+
+It should immediately surface:
+- dangerous commands
+- hardcoded credentials
+- prompt injection patterns
+
+If you want to show the project to someone quickly, this is the best demo command.
 
 ---
 
@@ -294,6 +316,16 @@ Former AI product lead at Tencent and Baidu, focused on:
 - AI productization and automation systems
 
 GitHub: [@AIPMAndy](https://github.com/AIPMAndy)
+
+---
+
+## Related docs
+
+- [README.md](README.md) — Chinese version
+- [CONTRIBUTING.md](CONTRIBUTING.md) — contribution guide
+- [SECURITY.md](SECURITY.md) — vulnerability reporting policy
+- [CHANGELOG.md](CHANGELOG.md) — release notes
+- [ROADMAP.md](ROADMAP.md) — future direction
 
 ---
 
