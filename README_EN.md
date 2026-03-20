@@ -2,7 +2,7 @@
 
 # 🔒 SafeSkill
 
-**A security scanner for AI Skills — detect dangerous commands, hardcoded secrets, prompt injection patterns, and suspicious behavior before installation or execution.**
+**Detect dangerous commands, exposed secrets, prompt injection patterns, and suspicious behavior in AI Skills before installation or execution.**
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-green.svg)](https://python.org)
@@ -16,8 +16,8 @@
 
 **Why it's worth a look:**
 - 🔍 purpose-built for AI Skill / Agent Skill risks
-- ⚡ light enough to drop into CI
-- 🧩 supports JSON / SARIF for platform and audit workflows
+- ⚡ light enough for local checks and CI gates
+- 🧩 JSON / SARIF output for platforms and audit workflows
 
 </div>
 
@@ -84,6 +84,12 @@ That focus is the product choice:
 | Low setup cost | ✅ | ❌ | ✅ |
 
 **SafeSkill is not a full replacement for security review. It automates the most common and high-value checks for Skill ecosystems.**
+
+---
+
+## In one sentence
+
+> **If AI Skills are like plugins, SafeSkill is the security check you run before trusting them.**
 
 ---
 
@@ -324,6 +330,18 @@ Former AI product lead at Tencent and Baidu, focused on:
 - AI productization and automation systems
 
 GitHub: [@AIPMAndy](https://github.com/AIPMAndy)
+
+---
+
+## 📣 Suggested promo copy
+
+If you want a short line for X, Hacker News, or a community post, use this:
+
+> SafeSkill is a lightweight security scanner for AI Skills. It catches dangerous commands, hardcoded secrets, prompt injection patterns, and suspicious behavior before installation.
+
+Short Chinese version:
+
+> SafeSkill 是一个 AI Skill 安全扫描器，在安装前先把危险命令、硬编码密钥、提示词注入这些高风险模式扫出来。
 
 ---
 
