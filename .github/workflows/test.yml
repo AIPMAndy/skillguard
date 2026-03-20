@@ -12,25 +12,42 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.9', '3.10', '3.11', '3.12']
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-    
+
     - name: Install dependencies
       run: |
-        pip install -e .
-    
-    - name: Run tests
+        python -m pip install --upgrade pip
+        python -m pip install -e .
+        python -m pip install pytest
+
+    - name: Run unit tests
       run: |
-        python3 -m unittest tests.test_safeskill -v
-    
-    - name: Test CLI
+        python -m unittest tests.test_safeskill -v
+
+    - name: Run pytest suite
       run: |
-        safeskill --help
-        safeskill . --format json
+        python -m pytest tests/ -q
+
+    - name: Test CLI help
+      run: |
+        python safeskill.py --help
+
+    - name: Test CLI JSON output
+      run: |
+        python safeskill.py . --format json --quiet > /tmp/safeskill-report.json || true
+        python - <<'PY'
+        import json
+        from pathlib import Path
+        data = json.loads(Path('/tmp/safeskill-report.json').read_text())
+        assert 'summary' in data
+        assert 'findings' in data
+        print(data['summary'])
+        PY

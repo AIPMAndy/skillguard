@@ -1,2 +1,1 @@
-# No external dependencies for core scanner
-# Pure Python standard library only
+PyYAML>=6.0

@@ -1,13 +1,19 @@
-from setuptools import setup, find_packages
+from setuptools import setup
+
+from safeskill import __version__
 
 setup(
     name="safeskill",
-    version="0.2.0",
+    version=__version__,
     description="Skill Security Scanner - Focus on securing AI Skills",
     author="AIPMAndy",
     author_email="",
     url="https://github.com/AIPMAndy/safeskill",
     py_modules=["safeskill"],
+    install_requires=["PyYAML>=6.0"],
+    extras_require={
+        "dev": ["pytest>=7.0"],
+    },
     entry_points={
         "console_scripts": [
             "safeskill=safeskill:main",

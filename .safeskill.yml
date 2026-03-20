@@ -1,9 +1,7 @@
 # SkillGuard Configuration
-# Place this file as .skillguard.yml in your skill directory
+# Used by safeskill.py when scanning a project directory.
 
-# Scan settings
 scan:
-  # File extensions to scan
   extensions:
     - .py
     - .md
@@ -13,8 +11,7 @@ scan:
     - .json
     - .js
     - .ts
-  
-  # Directories to exclude
+
   exclude_dirs:
     - .git
     - __pycache__
@@ -24,32 +21,30 @@ scan:
     - dist
     - build
     - .cache
-  
-  # Files to exclude (supports glob patterns)
+    - .tox
+    - .pytest_cache
+
+  # Files/patterns to exclude from scanning.
+  # The project scans code examples a lot, so we exclude docs/tests/self by default
+  # to avoid self-referential false positives in this repository.
   exclude_files:
     - "*.min.js"
-    - "*.test.py"
-    - "test_*.py"  # Exclude test files
-    - "README*.md"  # Exclude README files (examples may trigger false positives)
+    - "tests/*"
+    - "README*.md"
     - "CHANGELOG*"
     - "LICENSE*"
-    - "skillguard.py"  # Exclude self (rule definitions trigger false positives)
-    - ".skillguard.yml"  # Exclude config file
-    - "*.yml"  # Exclude YAML files
-    - "*.yaml"  # Exclude YAML files
+    - "ROADMAP.md"
+    - "safeskill.py"
+    - ".safeskill.yml"
+    - ".github/workflows/*"
 
-# Rule settings
 rules:
-  # Disable specific rules
-  disabled:
-    # - todo_fixme  # Uncomment to disable TODO/FIXME detection
-  
-  # Customize rule severity
+  disabled: []
+
   severity:
-    eval_exec: MEDIUM  # Change from MEDIUM to HIGH
-    network_request: LOW  # Change from MEDIUM to LOW
-  
-  # Add custom rules
+    eval_exec: MEDIUM
+    network_request: LOW
+
   custom:
     - id: custom_api_key
       name: Custom API Key Pattern
@@ -58,24 +53,14 @@ rules:
       description: "Hardcoded company API key"
       remediation: "Use environment variables for API keys"
 
-# Report settings
 report:
-  # Default output format
   format: markdown
-  
-  # Include remediation advice
   show_remediation: true
-  
-  # Include code snippets
   show_snippets: true
   snippet_length: 80
 
-# CI/CD settings
 ci:
-  # Fail on findings at or above this level
   fail_on: HIGH
-  
-  # Exit codes
   exit_codes:
     clean: 0
     low: 0
