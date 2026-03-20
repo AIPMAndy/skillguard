@@ -32,6 +32,8 @@ scan:
     - "README*.md"  # Exclude README files (examples may trigger false positives)
     - "CHANGELOG*"
     - "LICENSE*"
+    - "skillguard.py"  # Exclude self (rule definitions trigger false positives)
+    - ".skillguard.yml"  # Exclude config file
 
 # Rule settings
 rules:
