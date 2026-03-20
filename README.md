@@ -1,4 +1,4 @@
-# 🔒 SkillGuard
+# 🔒 SafeSkill
 
 > 专注 Skill 安全分析，让每个人都能安全使用 AI Skill
 
@@ -12,7 +12,7 @@
 
 ## 💡 一句话介绍
 
-**SkillGuard = Skill 的「杀毒软件」**
+**SafeSkill = Skill 的「杀毒软件」**
 
 安装 Skill 前自动扫描，识别恶意代码、凭据窃取、提示词注入等风险。
 
@@ -69,7 +69,7 @@ python3 safeskill.py ./my-skill/ --format json --fail-on high
 $ python3 safeskill.py ./dangerous-skill/
 
 ==================================================
-🔒 SkillGuard v0.2.0 - Scanning: ./dangerous-skill/
+🔒 SafeSkill v0.2.0 - Scanning: ./dangerous-skill/
 ==================================================
 
 Risk Score: 45/100 (HIGH)
@@ -172,9 +172,9 @@ safeskill/
 | 项目 | 定位 | 关系 |
 |------|------|------|
 | **SoSkill** | Skill 聚合 + 基础安全 | 发现 Skill |
-| **SkillGuard** | 深度安全分析 | 扫描 Skill |
+| **SafeSkill** | 深度安全分析 | 扫描 Skill |
 
-**集成计划**: SoSkill 将调用 SkillGuard API 提供安全评分
+**集成计划**: SoSkill 将调用 SafeSkill API 提供安全评分
 
 ---
 
@@ -184,7 +184,7 @@ safeskill/
 
 - 微信: AIPMAndy
 - GitHub: [@AIPMAndy](https://github.com/AIPMAndy)
-- 项目: [SoSkill](https://github.com/AIPMAndy/soskill) | [SkillGuard](https://github.com/AIPMAndy/safeskill)
+- 项目: [SoSkill](https://github.com/AIPMAndy/soskill) | [SafeSkill](https://github.com/AIPMAndy/safeskill)
 
 ---
 
