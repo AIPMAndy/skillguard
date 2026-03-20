@@ -1,10 +1,8 @@
 from setuptools import setup
 
-from safeskill import __version__
-
 setup(
     name="safeskill",
-    version=__version__,
+    version="0.4.1",
     description="Skill Security Scanner - Focus on securing AI Skills",
     author="AIPMAndy",
     author_email="",

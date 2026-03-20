@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "safeskill"
+version = "0.4.1"
+description = "Security scanner for AI Skills"
+readme = "README_EN.md"
+requires-python = ">=3.9"
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "AIPMAndy" }
+]
+keywords = [
+  "ai",
+  "security",
+  "skill",
+  "sast",
+  "prompt-injection",
+  "secret-detection"
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Security",
+  "Topic :: Software Development :: Quality Assurance"
+]
+dependencies = [
+  "PyYAML>=6.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/AIPMAndy/safeskill"
+Repository = "https://github.com/AIPMAndy/safeskill"
+Issues = "https://github.com/AIPMAndy/safeskill/issues"
+Changelog = "https://github.com/AIPMAndy/safeskill/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.0"
+]
+
+[project.scripts]
+safeskill = "safeskill:main"
+
+[tool.setuptools]
+py-modules = ["safeskill"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

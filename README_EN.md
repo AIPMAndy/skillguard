@@ -106,6 +106,14 @@ pip install -e .
 safeskill ./your-skill
 ```
 
+### Option 3: common developer commands
+
+```bash
+make install-dev
+make test
+make demo
+```
+
 ### Generate different report formats
 
 ```bash
@@ -326,6 +334,8 @@ GitHub: [@AIPMAndy](https://github.com/AIPMAndy)
 - [SECURITY.md](SECURITY.md) — vulnerability reporting policy
 - [CHANGELOG.md](CHANGELOG.md) — release notes
 - [ROADMAP.md](ROADMAP.md) — future direction
+- [Makefile](Makefile) — common dev commands
+- [pyproject.toml](pyproject.toml) — standard Python package config
 
 ---
 

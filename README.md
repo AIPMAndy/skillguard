@@ -106,6 +106,14 @@ pip install -e .
 safeskill ./your-skill
 ```
 
+### 方式 3：开发者常用命令
+
+```bash
+make install-dev
+make test
+make demo
+```
+
 ### 生成不同格式的报告
 
 ```bash
@@ -326,6 +334,8 @@ GitHub: [@AIPMAndy](https://github.com/AIPMAndy)
 - [SECURITY.md](SECURITY.md) — 安全报告流程
 - [CHANGELOG.md](CHANGELOG.md) — 更新记录
 - [ROADMAP.md](ROADMAP.md) — 后续规划
+- [Makefile](Makefile) — 常用开发命令
+- [pyproject.toml](pyproject.toml) — 标准 Python 包配置
 
 ---
 
