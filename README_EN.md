@@ -52,6 +52,20 @@ Good fit for:
 
 ---
 
+## 🧠 Positioning
+
+SafeSkill is **not** trying to be a giant all-in-one security platform.
+It is better understood as a **first security gate for AI Skill ecosystems**:
+
+- light enough to run locally or in CI
+- fast enough to use before install or publish
+- focused enough to catch the most common and most dangerous Skill patterns first
+
+That focus is the product choice:
+**not a replacement for full security review, but a practical way to block obvious high-risk patterns early.**
+
+---
+
 ## 🆚 Why use this instead of generic tools?
 
 | Capability | Generic lint / formatter | Manual review | **SafeSkill** |
@@ -224,6 +238,19 @@ jobs:
 ```
 
 Use `sarif` output if you want to upload results into GitHub Code Scanning.
+
+---
+
+## 📦 Recommended repo workflow
+
+If you're a platform, team, or marketplace operator, a good setup looks like this:
+
+1. **Authoring stage**: run SafeSkill locally before publishing
+2. **PR stage**: run SafeSkill automatically in CI
+3. **Release stage**: archive JSON or SARIF output
+4. **Consumption stage**: scan third-party Skills before trust or install
+
+That makes SafeSkill more than a CLI — it becomes a lightweight security workflow component.
 
 ---
 
