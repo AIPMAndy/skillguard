@@ -30,6 +30,7 @@ scan:
   exclude_files:
     - "*.min.js"
     - "tests/*"
+    - "examples/*"
     - "README*.md"
     - "CHANGELOG*"
     - "LICENSE*"
